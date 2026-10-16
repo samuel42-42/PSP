@@ -8,19 +8,17 @@ import java.io.File;
 
 public class Clase{
     public static void main(String[] args) {
-        try(BufferedReader lectorTeclado = new BufferedReader(
-            new InputStreamReader(System.in, StandardCharsets.UTF_8))){
-        ProcessBuilder pH = new ProcessBuilder(args);
-        pH.inheritIO();
-        Process P=pH.start();
-        System.out.println(P.info());
-        System.out.println();
-        Path pathSalida = Path.of("P1_7/salida.log");
-        Path pathError = Path.of("P1_7/error.log");
-        File fSalida = pathSalida.toFile();
-        File fError = pathError.toFile();
-        pH.redirectOutput(ProcessBuilder.Redirect.to(fSalida));
-        pH.redirectError(ProcessBuilder.Redirect.to(fError));
+        if(args.length <=0){
+            System.out.println("No ha se ha introducido ningún comando a ejecutar.");
+            System.exit(0);
+        }
+        File fSalida = new File("salida.log");
+        File fError = new File("error.log");
+        ProcessBuilder pb = new ProcessBuilder(args);
+        pb.redirectOutput(fSalida);
+        pb.redirectError(fError);
+        try{
+            Process P=pb.start();
         }
         catch(IOException e){
             e.printStackTrace();
